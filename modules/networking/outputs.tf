@@ -7,5 +7,5 @@ output "vnet_name" {
 }
 
 output "frontend_subnet_id" {
-  value = azurerm_subnet.subnet.id  # <-- Make sure this matches your resource name inside networking/main.tf
+  value = azurerm_subnet.frontend.id
 }
