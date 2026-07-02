@@ -1,25 +1,37 @@
-name: "Terraform CI Pipeline"
+name: "Terraform CI/CD Pipeline"
 
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-  terraform-validate:
-    name: "Auto code-check"
+  terraform-deploy:
+    name: "Auto Code-Check & Deploy"
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    # 1. 把 GitHub 上的代碼複製到臨時的 Linux 環境
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-      - name: Install Terraform Engine
-        uses: hashicorp/setup-terraform@v3
+    # 2. 拿取剛才存放在 GitHub Vault 的鎖匙，登入 Azure
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Initialize & Run Validation Test
-        run: |
-          # Use backend=false and standard init so the runner downloads provider schemas
-          terraform init -backend=false
-          terraform validate
+    # 3. 安裝 Terraform 專利工具
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+    # 4. 初始化（因為要 deploy，這裡需要完整的 init，不用加 -backend=false）
+    - name: Terraform Init
+      run: terraform init
+
+    # 5. 語法合規性檢查
+    - name: Terraform Validate
+      run: terraform validate
+
+    # 6. 正式出發！由 GitHub 幫你遠端 Apply 到 Azure 建立實體虛擬機
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
