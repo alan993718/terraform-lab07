@@ -20,5 +20,6 @@ jobs:
 
       - name: Initialize & Run Validation Test
         run: |
+          # Use backend=false and standard init so the runner downloads provider schemas
           terraform init -backend=false
           terraform validate
