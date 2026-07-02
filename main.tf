@@ -15,3 +15,11 @@ module "networking" {
   backend_subnet      = var.backend_subnet
   management_subnet   = var.management_subnet
 }
+# Connect and orchestrate the Linux VM module
+module "vm" {
+  source              = "./modules/compute"
+  vm_name             = "lab07-linux-vm"
+  location            = module.resource_group.location
+  resource_group_name = module.resource_group.resource_group_name
+  subnet_id           = module.networking.frontend_subnet_id # Hands off the subnet ID from your networking module
+}
