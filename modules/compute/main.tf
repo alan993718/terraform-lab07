@@ -14,7 +14,7 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   name                = var.vm_name
   resource_group_name = var.resource_group_name
   location            = var.location
-  size                = "Standard_B1s" # A cost-effective size perfect for lab labs
+  size                = "Standard_D2s_v3" # A cost-effective size perfect for lab labs
   admin_username      = "azureuser"
   
   # Using password authentication for simplified lab training
