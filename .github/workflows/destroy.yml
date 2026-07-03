@@ -1,7 +1,7 @@
 name: "Terraform Destroy Pipeline"
 
 on:
-  workflow_dispatch: # <-- 呢行係精華！代表唔會自動觸發，只有你在網頁手動撳掣才會執行
+  workflow_dispatch:
 
 permissions:
   id-token: write
@@ -36,4 +36,4 @@ jobs:
         run: terraform init
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve # <-- -auto-approve 代表全自動確認，不需要人手打 yes
+        run: terraform destroy -auto-approve
