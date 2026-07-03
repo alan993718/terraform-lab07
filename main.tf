@@ -1,3 +1,12 @@
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "satfstatealan01"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+  }
+}
+
 module "resource_group" {
   source              = "./modules/resource-group"
   resource_group_name = var.resource_group_name
